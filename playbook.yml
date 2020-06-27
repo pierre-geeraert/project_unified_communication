@@ -1,0 +1,15 @@
+
+- hosts: zeus_project
+  tasks:
+
+    - name: Start container, connect to network and link
+      docker_container:
+        name: sleeper
+        image: nextcloud
+        networks:
+          - name: TestingNet
+            ipv4_address: "172.1.1.100"
+            aliases:
+            - sleepyzz
+            links:
+            - db_test:db
