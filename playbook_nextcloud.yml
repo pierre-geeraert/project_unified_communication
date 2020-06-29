@@ -1,0 +1,17 @@
+
+- hosts: zeus_project
+  tasks:
+  - name: Create a Nextcloud container
+    docker_container:
+      name: nextcloud
+      image: nextcloud
+      ports:
+        - "4001:80"
+      volumes:
+        - /data
+      networks:
+        - name: network_Data
+          ipv4_address: "10.172.0.2"
+          aliases:
+          - nextcloud
+      purge_networks: yes
