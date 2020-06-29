@@ -1,0 +1,42 @@
+- hosts: zeus_project
+  tasks:
+  - name: Create network DATA
+    docker_network:
+      name: network_Data
+      ipam_config:
+        - subnet: 10.172.0.0/24
+          gateway: 10.172.0.1
+          iprange: 10.172.0.0/26
+
+  - name: Create network Voice
+    docker_network:
+      name: network_Voice
+      ipam_config:
+        - subnet: 10.173.0.0/24
+          gateway: 10.173.0.1
+          iprange: 10.173.0.0/26
+
+  - name: Create network Orchestrator
+    docker_network:
+      name: network_Orchestrator
+      ipam_config:
+        - subnet: 10.174.0.0/24
+          gateway: 10.174.0.1
+          iprange: 10.174.0.0/26
+
+
+  - name: Create network auxillary1
+    docker_network:
+      name: network_auxillary1
+      ipam_config:
+        - subnet: 10.175.0.0/24
+          gateway: 10.175.0.1
+          iprange: 10.175.0.0/26
+
+  - name: Create network auxillary2
+    docker_network:
+      name: network_auxillary2
+      ipam_config:
+        - subnet: 10.175.0.0/24
+          gateway: 10.175.0.1
+          iprange: 10.175.0.0/26
