@@ -1,0 +1,34 @@
+
+- hosts: zeus_project
+  tasks:
+  - name: Create a rancher container
+    docker_container:
+      name: rancher2
+      image: rancher/rancher
+      ports:
+        - "443:443"
+      volumes:
+        - /data
+      networks:
+        - name: network_Orchestrator
+          ipv4_address: "10.174.0.2"
+          aliases:
+          - rancher
+      purge_networks: yes
+
+- hosts: zeus_project
+  tasks:
+  - name: Create a Nextcloud container
+    docker_container:
+      name: nextcloud
+      image: nextcloud
+      ports:
+        - "4001:80"
+      volumes:
+        - /data
+      networks:
+        - name: network_Data
+          ipv4_address: "10.172.0.2"
+          aliases:
+          - nextcloud
+      purge_networks: yes
