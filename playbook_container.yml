@@ -3,7 +3,7 @@
   tasks:
   - name: Create a rancher container
     docker_container:
-      name: rancher2
+      name: rancher
       image: rancher/rancher
       ports:
         - "443:443"
