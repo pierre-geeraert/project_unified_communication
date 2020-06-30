@@ -50,38 +50,7 @@
           - redis
       purge_networks: yes
 - hosts: zeus_project
-  tasks:
-  - name: Create a Redis container
-    docker_container:
-      name: BDD
-      image: redis
-      ports:
-        - "4002:6379"
-      volumes:
-        - /data
-      networks:
-        - name: network_Data
-          ipv4_address: "10.172.0.3"
-          aliases:
-          - redis
-      purge_networks: yes
-      - hosts: zeus_project
-  tasks:
-  - name: Create a Redis container
-    docker_container:
-      name: BDD
-      image: redis
-      ports:
-        - "4002:6379"
-      volumes:
-        - /data
-      networks:
-        - name: network_Data
-          ipv4_address: "10.172.0.3"
-          aliases:
-          - redis
-      purge_networks: yes
-       - hosts: zeus_project
+
   tasks:
   - name: Create a MediaWiki container
     docker_container:
@@ -93,7 +62,7 @@
         - /data
       networks:
         - name: network_Data
-          ipv4_address: "10.172.0.3"
+          ipv4_address: "10.172.0.4"
           aliases:
           - mediawiki
       purge_networks: yes
