@@ -1,6 +1,22 @@
 
 - hosts: zeus_project
   tasks:
+
+ - name: Create a portainer container
+    docker_container:
+      name: portainer
+      image: portainer/portainer
+      ports:
+        - "4000:9000"
+      volumes:
+        - /data
+      networks:
+        - name: network_Orchestrator
+          ipv4_address: "10.174.0.3"
+          aliases:
+          - portainer
+      purge_networks: yes
+
   - name: Create a rancher container
     docker_container:
       name: rancher
@@ -32,7 +48,7 @@
           aliases:
           - nextcloud
       purge_networks: yes
-   
+
 - hosts: zeus_project
   tasks:
   - name: Create a Redis container
@@ -49,7 +65,7 @@
           aliases:
           - redis
       purge_networks: yes
-      
+
 - hosts: zeus_project
   tasks:
   - name: Create a MediaWiki container
