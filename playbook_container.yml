@@ -11,11 +11,17 @@
           target_port: 9000
           protocol: tcp
           mode: host
-      #volumes:
-      #  - /data
       networks:
         - name: network_Orchestrator
           #ipv4_address: "10.174.0.3"
+      mounts:
+      - source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
 
   - name: Create a Nextcloud container
@@ -28,11 +34,16 @@
           target_port: 80
           protocol: tcp
           mode: host
-      #volumes:
-      #  - /data
       networks:
         - name: network_Data
-          #ipv4_address: "10.174.0.3"
+      #mounts:
+      #- source: config
+      #  target: /var/www/html/config
+      #  type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
 
   - name: Create a Redis container
@@ -45,11 +56,12 @@
           target_port: 6379
           protocol: tcp
           mode: host
-      #volumes:
-      #  - /data
       networks:
         - name: network_Orchestrator
-          #ipv4_address: "10.174.0.3"
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
 
   - name: Create a nginx container
@@ -58,15 +70,20 @@
       image: nginx
       replicas: 2
       publish:
-        - published_port: "4000"
+        - published_port: "80"
           target_port: 80
           protocol: tcp
           mode: host
-      #volumes:
-      #  - /data
       networks:
         - name: network_Data
-          #ipv4_address: "10.174.0.3"
+      mounts:
+      - source: /home/ServerUser1/project_unified_communication/configurations/reverse_proxy
+        target: /etc/nginx/sites-enabled
+        type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
 
   - name: Create a MediaWiki container
@@ -75,12 +92,13 @@
       image: mediawiki
       replicas: 2
       publish:
-        - published_port: "4003"
+        - published_port: "4004"
           target_port: 80
           protocol: tcp
           mode: host
-      #volumes:
-      #  - /data
       networks:
         - name: network_Data
-          #ipv4_address: "10.174.0.3"
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3

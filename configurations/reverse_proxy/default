@@ -1,6 +1,6 @@
 server {
 
-        server_name www.office.cesi.website office.cesi.website;
+        server_name www.office.docker.cesi.website office.docker.cesi.website;
 
         #return 301 https://$host$request_uri;
         location / {
