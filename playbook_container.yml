@@ -1,84 +1,86 @@
-
-- hosts: zeus_project
+- hosts: azure_docker1
   tasks:
 
- - name: Create a portainer container
-    docker_container:
+  - name: Create a portainer container
+    docker_swarm_service:
       name: portainer
       image: portainer/portainer
-      ports:
-        - "4000:9000"
-      volumes:
-        - /data
+      replicas: 2
+      publish:
+        - published_port: "4000"
+          target_port: 9000
+          protocol: tcp
+          mode: host
+      #volumes:
+      #  - /data
       networks:
         - name: network_Orchestrator
-          ipv4_address: "10.174.0.3"
-          aliases:
-          - portainer
-      purge_networks: yes
+          #ipv4_address: "10.174.0.3"
 
-  - name: Create a rancher container
-    docker_container:
-      name: rancher
-      image: rancher/rancher
-      ports:
-        - "443:443"
-      volumes:
-        - /data
-      networks:
-        - name: network_Orchestrator
-          ipv4_address: "10.174.0.2"
-          aliases:
-          - rancher
-      purge_networks: yes
 
-- hosts: zeus_project
-  tasks:
   - name: Create a Nextcloud container
-    docker_container:
-      name: nextcloud
+    docker_swarm_service:
+      name: Nextcloud
       image: nextcloud
-      ports:
-        - "4001:80"
-      volumes:
-        - /data
+      replicas: 2
+      publish:
+        - published_port: "4001"
+          target_port: 80
+          protocol: tcp
+          mode: host
+      #volumes:
+      #  - /data
       networks:
         - name: network_Data
-          ipv4_address: "10.172.0.2"
-          aliases:
-          - nextcloud
-      purge_networks: yes
+          #ipv4_address: "10.174.0.3"
 
-- hosts: zeus_project
-  tasks:
+
   - name: Create a Redis container
-    docker_container:
-      name: BDD
+    docker_swarm_service:
+      name: Redis
       image: redis
-      ports:
-        - "4002:6379"
-      volumes:
-        - /data
+      replicas: 2
+      publish:
+        - published_port: "4002"
+          target_port: 6379
+          protocol: tcp
+          mode: host
+      #volumes:
+      #  - /data
+      networks:
+        - name: network_Orchestrator
+          #ipv4_address: "10.174.0.3"
+
+
+  - name: Create a nginx container
+    docker_swarm_service:
+      name: nginx
+      image: nginx
+      replicas: 2
+      publish:
+        - published_port: "4000"
+          target_port: 80
+          protocol: tcp
+          mode: host
+      #volumes:
+      #  - /data
       networks:
         - name: network_Data
-          ipv4_address: "10.172.0.3"
-          aliases:
-          - redis
-      purge_networks: yes
+          #ipv4_address: "10.174.0.3"
 
-- hosts: zeus_project
-  tasks:
+
   - name: Create a MediaWiki container
-    docker_container:
+    docker_swarm_service:
       name: MediaWiki
       image: mediawiki
-      ports:
-        - "4003:80"
-      volumes:
-        - /data
+      replicas: 2
+      publish:
+        - published_port: "4003"
+          target_port: 80
+          protocol: tcp
+          mode: host
+      #volumes:
+      #  - /data
       networks:
         - name: network_Data
-          ipv4_address: "10.172.0.4"
-          aliases:
-          - mediawiki
-      purge_networks: yes
+          #ipv4_address: "10.174.0.3"
