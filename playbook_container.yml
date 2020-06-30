@@ -49,8 +49,8 @@
           aliases:
           - redis
       purge_networks: yes
+      
 - hosts: zeus_project
-
   tasks:
   - name: Create a MediaWiki container
     docker_container:
