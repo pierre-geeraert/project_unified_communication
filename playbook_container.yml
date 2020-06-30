@@ -49,3 +49,20 @@
           aliases:
           - redis
       purge_networks: yes
+      
+- hosts: zeus_project
+  tasks:
+  - name: Create a MediaWiki container
+    docker_container:
+      name: MediaWiki
+      image: mediawiki
+      ports:
+        - "4003:80"
+      volumes:
+        - /data
+      networks:
+        - name: network_Data
+          ipv4_address: "10.172.0.4"
+          aliases:
+          - mediawiki
+      purge_networks: yes
