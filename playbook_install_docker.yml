@@ -1,5 +1,6 @@
 ---
-- hosts: zeus_ansible
+- hosts: azure_docker1
+  become: true
 
 
   tasks:
@@ -8,16 +9,26 @@
 
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common','gnupg2', 'python3-pip', 'virtualenv', 'python3-setuptools']
 
-    - name: Add Docker GPG apt Key
+    - name: Add Docker ubuntu GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker debian GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
         state: present
 
     - name: Add Docker Repository
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Add Docker debian Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
         state: present
 
     - name: Update apt and install docker-ce
@@ -29,5 +40,5 @@
 
     - name: Pull default Docker image
       docker_image:
-        name: "hello world"
+        name: "hello-world"
         source: pull
