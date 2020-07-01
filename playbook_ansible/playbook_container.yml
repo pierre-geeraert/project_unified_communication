@@ -1,0 +1,104 @@
+- hosts: azure_docker1
+  tasks:
+
+  - name: Create a portainer container
+    docker_swarm_service:
+      name: portainer
+      image: portainer/portainer
+      replicas: 2
+      publish:
+        - published_port: "4000"
+          target_port: 9000
+          protocol: tcp
+          mode: host
+      networks:
+        - name: network_Orchestrator
+          #ipv4_address: "10.174.0.3"
+      mounts:
+      - source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+
+  - name: Create a Nextcloud container
+    docker_swarm_service:
+      name: Nextcloud
+      image: nextcloud
+      replicas: 2
+      publish:
+        - published_port: "4001"
+          target_port: 80
+          protocol: tcp
+          mode: host
+      networks:
+        - name: network_Data
+      #mounts:
+      #- source: /home/ServerUser1/project_unified_communication/configurations/_data
+      #  target: /var/www/html/
+      #  type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+
+  - name: Create a Redis container
+    docker_swarm_service:
+      name: Redis
+      image: redis
+      replicas: 2
+      publish:
+        - published_port: "4002"
+          target_port: 6379
+          protocol: tcp
+          mode: ingress
+      networks:
+        - name: network_Orchestrator
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+
+  - name: Create a nginx container
+    docker_swarm_service:
+      name: nginx
+      image: nginx
+      replicas: 2
+      publish:
+        - published_port: "80"
+          target_port: 80
+          protocol: tcp
+          mode: ingress
+      networks:
+        - name: network_Data
+      mounts:
+      - source: /home/ServerUser1/project_unified_communication/configurations/reverse_proxy
+        target: /etc/nginx/sites-enabled
+        type: bind
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+
+  - name: Create a MediaWiki container
+    docker_swarm_service:
+      name: MediaWiki
+      image: mediawiki
+      replicas: 2
+      publish:
+        - published_port: "4004"
+          target_port: 80
+          protocol: tcp
+          mode: host
+      networks:
+        - name: network_Data
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
