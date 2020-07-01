@@ -1,0 +1,21 @@
+services:
+  mybb:
+    image: mybb/mybb:latest
+    volumes:
+    - ${HOME}/mybb:/var/www/html:rw
+  nginx:
+    image: nginx:mainline
+    ports:
+    - published: 8080
+      target: 80
+    volumes:
+    - ${HOME}/mybb:/usr/share/nginx/html:ro
+  postgresql:
+    environment:
+      POSTGRES_DB: mybb
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_USER: mybb
+    image: postgres:10.4
+    volumes:
+    - ${HOME}/postgres/data:/var/lib/postgresql/data:rw
+version: '3.6'
