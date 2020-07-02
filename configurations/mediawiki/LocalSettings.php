@@ -30,7 +30,7 @@ $wgMetaNamespace = "Wiki";
 $wgScriptPath = "";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "http://http://mediawiki.cesi.website/";
+$wgServer = "http://docker.cesi.website:4004";
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
@@ -97,7 +97,7 @@ $wgJobTypeConf['default'] = [
 ];
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_NONE;
+$wgMainCacheType = CACHE_ACCEL;
 $wgMemCachedServers = [];
 
 ## To enable image uploads, make sure the 'images' directory
@@ -127,14 +127,14 @@ $wgShellLocale = "C.UTF-8";
 # Site language code, should be one of the list in ./languages/data/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "a0c98b588cab37ea27b6e023ed2244b0a137804cc2d0f29194c6953343050c4e";
+$wgSecretKey = "5a1de8376a8db8d23db54f28c3844157c87c542a8eeed6f99105d035cf9c2ec1";
 
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "62974a284f94f678";
+$wgUpgradeKey = "6e825e549250d6ff";
 
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation
