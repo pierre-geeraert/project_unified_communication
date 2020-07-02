@@ -98,6 +98,27 @@
           mode: host
       networks:
         - name: network_Data
+      mounts:
+        - source: /home/ServerUser1/mediawiki
+          target: /disk
+      restart_config:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+
+  - name: Create a exim container
+    docker_swarm_service:
+      name: tianon/exim4
+      image: tianon/exim4
+      replicas: 2
+      publish:
+        - published_port: "25"
+          target_port: 25
+          protocol: tcp
+          mode: host
+      networks:
+        - name: network_Data
       restart_config:
         condition: any
         delay: 5s
