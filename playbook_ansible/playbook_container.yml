@@ -109,7 +109,7 @@
 
   - name: Create a exim container
     docker_swarm_service:
-      name: tianon/exim4
+      name: exim
       image: tianon/exim4
       replicas: 2
       publish:
